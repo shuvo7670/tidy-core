@@ -1,0 +1,41 @@
+<?php 
+/*
+ * Plugin Name: Tidy Core
+ * Plugin URI: https://wordpress.org/plugins
+ * Description: Core plugin for MAK theme.
+ * Version: 1.0.0
+ * Author: MTS
+ * Author URI: https://maktechsolution.com/
+ * License:           GPL v2 or later
+ * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
+ * Text Domain: tidy-core
+*/
+
+function register_tidy_core_widgets( $widgets_manager ) {
+	require_once( __DIR__ . '/widgets/hero.php' );
+    $widgets_manager->register( new \TIDY_CORE_Hero() );
+
+}
+add_action( 'elementor/widgets/register', 'register_tidy_core_widgets' );
+
+
+function category_elementor_init(){
+    \Elementor\Plugin::instance()->elements_manager->add_category(
+        'tidy_core',
+        [
+            'title'  => 'Tidy Core',
+            'icon' => 'font'
+        ],
+        5
+    );
+}
+add_action('elementor/init', 'category_elementor_init');
+
+
+function register_plugin_styles() {
+    wp_enqueue_style('tidy-core-styles', plugin_dir_url(__FILE__) . '/assets/css/style.css', array(), '0.1.0', 'all');
+    wp_enqueue_script( 'tidy-core-script', plugin_dir_url(__FILE__) . 'assets/js/main.min.js', array('jquery'), '0.1.0', true );
+}
+add_action( 'wp_enqueue_scripts', 'register_plugin_styles' );
+
+
