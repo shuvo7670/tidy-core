@@ -66,13 +66,39 @@ class TIDY_CORE_TAB_Widget extends \Elementor\Widget_Base {
 						],
 					],
 					[
-						'name'    => 'tab_image',
-						'label'   => esc_html__( 'Choose Image', 'tidy-core' ),
-						'type'    => \Elementor\Controls_Manager::MEDIA,
-						'default' => [
+						'name'    => 'tab_media_type',
+						'label'   => esc_html__( 'Media Type', 'tidy-core' ),
+						'type'    => \Elementor\Controls_Manager::SELECT,
+						'default' => 'image',
+						'options' => [
+							'image' => esc_html__( 'Image', 'tidy-core' ),
+							'video' => esc_html__( 'Video', 'tidy-core' ),
+						],
+					],
+					[
+						'name'        => 'tab_image',
+						'label'       => esc_html__( 'Choose Image', 'tidy-core' ),
+						'type'        => \Elementor\Controls_Manager::MEDIA,
+						'media_types' => [ 'image' ],
+						'default'     => [
 							'url' => \Elementor\Utils::get_placeholder_image_src(),
 						],
-					]
+						'condition' => [
+							'tab_media_type' => 'image',
+						],
+					],
+					[
+						'name'        => 'tab_video',
+						'label'       => esc_html__( 'Choose Video', 'tidy-core' ),
+						'type'        => \Elementor\Controls_Manager::MEDIA,
+						'media_types' => [ 'video' ],
+						'default'     => [
+							'url' => \Elementor\Utils::get_placeholder_image_src(),
+						],
+						'condition' => [
+							'tab_media_type' => 'video',
+						],
+					],
 				],
 				'title_field' => '{{{ tab_heading }}}',
 			]
@@ -145,7 +171,13 @@ class TIDY_CORE_TAB_Widget extends \Elementor\Widget_Base {
                             </ul>
 							<?php foreach( $tab_list as $index => $item ) : ?>
 								 <div id="tab-<?php echo $index ?>" class="tab-panel" role="tabpanel">
-									<img class="has-shadow" src="<?php echo $item['tab_image']['url'] ?>" alt="Features tabs image 01" width="896" height="504">
+									<?php if( $item['tab_media_type'] == 'image' ) : ?>
+										<img class="has-shadow" src="<?php echo $item['tab_image']['url'] ?>" alt="Features tabs image 01" width="896" height="504">
+									<?php else : ?>
+									<video class="has-shadow" width="896" height="504" controls>
+										<source src="<?php echo $item['tab_video']['url'] ?>" type="video/mp4">
+									</video>
+									<?php endif ?>
 								</div>
 							<?php endforeach; ?>
                         </div>
