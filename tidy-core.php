@@ -13,7 +13,10 @@
 
 function register_tidy_core_widgets( $widgets_manager ) {
 	require_once( __DIR__ . '/widgets/hero.php' );
+    require_once( __DIR__ . '/widgets/tab_widget.php' );
+
     $widgets_manager->register( new \TIDY_CORE_Hero() );
+    $widgets_manager->register( new \TIDY_CORE_TAB_Widget() );
 
 }
 add_action( 'elementor/widgets/register', 'register_tidy_core_widgets' );
