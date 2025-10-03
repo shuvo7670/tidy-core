@@ -14,9 +14,13 @@
 function register_tidy_core_widgets( $widgets_manager ) {
 	require_once( __DIR__ . '/widgets/hero.php' );
     require_once( __DIR__ . '/widgets/tab_widget.php' );
+    require_once( __DIR__ . '/widgets/blog.php' );
+    require_once( __DIR__ . '/widgets/book.php' );
 
     $widgets_manager->register( new \TIDY_CORE_Hero() );
     $widgets_manager->register( new \TIDY_CORE_TAB_Widget() );
+    $widgets_manager->register( new \TIDY_CORE_BLOG_Widget() );
+    $widgets_manager->register( new \TIDY_CORE_Book() );
 
 }
 add_action( 'elementor/widgets/register', 'register_tidy_core_widgets' );
@@ -29,7 +33,7 @@ function category_elementor_init(){
             'title'  => 'Tidy Core',
             'icon' => 'font'
         ],
-        5
+        [10]
     );
 }
 add_action('elementor/init', 'category_elementor_init');
@@ -42,3 +46,7 @@ function register_plugin_styles() {
 add_action( 'wp_enqueue_scripts', 'register_plugin_styles' );
 
 
+add_action('init', 'tidy_core_init');
+function tidy_core_init() {
+    require_once( __DIR__ . '/helper/cpt.php' );
+}
