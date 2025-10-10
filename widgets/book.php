@@ -54,7 +54,7 @@ class TIDY_CORE_Book extends \Elementor\Widget_Base {
                                     <div class="container">
                                         <div class="news-inner section-inner">
                                             <div class="tiles-wrap">
-                                                <?php
+                                                 <?php
                                                     $args = array(
                                                         'post_type'      => 'book',
                                                         'posts_per_page' => 6,
@@ -95,7 +95,7 @@ class TIDY_CORE_Book extends \Elementor\Widget_Base {
                                                             <?php 
                                                         }
                                                     }
-                                                
+
                                                 ?>
                                             </div>
                                         </div>

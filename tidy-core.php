@@ -49,4 +49,29 @@ add_action( 'wp_enqueue_scripts', 'register_plugin_styles' );
 add_action('init', 'tidy_core_init');
 function tidy_core_init() {
     require_once( __DIR__ . '/helper/cpt.php' );
+    require_once( __DIR__ . '/helper/meta.php' );
 }
+
+add_action( 'save_post', function( $post_id ) {
+
+    // Check autosave
+    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+        return;
+    }
+
+    // Check permissions
+    if ( ! current_user_can( 'edit_post', $post_id ) ) {
+        return;
+    }
+
+    // Save the field
+    if ( isset( $_POST['author_name'] ) ) {
+        update_post_meta(
+            $post_id,
+            'author_name',
+            sanitize_text_field( $_POST['author_name'] )
+        );
+    } else {
+        delete_post_meta( $post_id, 'author_name' );
+    }
+} );
