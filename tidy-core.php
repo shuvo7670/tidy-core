@@ -45,6 +45,7 @@ function register_plugin_styles() {
 }
 add_action( 'wp_enqueue_scripts', 'register_plugin_styles' );
 
+do_action('tidy_core_loaded');
 
 add_action('init', 'tidy_core_init');
 function tidy_core_init() {
@@ -53,17 +54,6 @@ function tidy_core_init() {
 }
 
 add_action( 'save_post', function( $post_id ) {
-
-    // Check autosave
-    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
-        return;
-    }
-
-    // Check permissions
-    if ( ! current_user_can( 'edit_post', $post_id ) ) {
-        return;
-    }
-
     // Save the field
     if ( isset( $_POST['author_name'] ) ) {
         update_post_meta(
@@ -71,7 +61,15 @@ add_action( 'save_post', function( $post_id ) {
             'author_name',
             sanitize_text_field( $_POST['author_name'] )
         );
-    } else {
-        delete_post_meta( $post_id, 'author_name' );
+    }
+
+    if ( isset( $_POST['tour_duration'] ) ) {
+        update_post_meta(
+            $post_id,
+            'tour_duration',
+            sanitize_text_field( $_POST['tour_duration'] )
+        );
     }
 } );
+
+$tour_duration = get_post_meta(1903, 'tour_duration', true );
