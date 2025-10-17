@@ -83,7 +83,7 @@ class TIDY_CORE_Book extends \Elementor\Widget_Base {
                                                                                     <a href="<?php echo get_the_permalink() ?>"><?php echo get_the_title() ?></a>
                                                                                 </h3>
                                                                                 <p class="mb-16 text-sm">
-                                                                                    <?php echo wp_trim_words( get_the_content(),'20', '') ?>
+                                                                                    <?php echo wp_trim_words( get_the_content(),'20', '...') ?>
                                                                                 </p>
                                                                             </div>
                                                                             <div class="news-item-more text-xs mb-8">

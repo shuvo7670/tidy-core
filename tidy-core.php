@@ -16,11 +16,13 @@ function register_tidy_core_widgets( $widgets_manager ) {
     require_once( __DIR__ . '/widgets/tab_widget.php' );
     require_once( __DIR__ . '/widgets/blog.php' );
     require_once( __DIR__ . '/widgets/book.php' );
+    require_once( __DIR__ . '/widgets/products.php' );
 
     $widgets_manager->register( new \TIDY_CORE_Hero() );
     $widgets_manager->register( new \TIDY_CORE_TAB_Widget() );
     $widgets_manager->register( new \TIDY_CORE_BLOG_Widget() );
     $widgets_manager->register( new \TIDY_CORE_Book() );
+    $widgets_manager->register( new \TIDY_CORE_Products() );
 
 }
 add_action( 'elementor/widgets/register', 'register_tidy_core_widgets' );
@@ -40,7 +42,9 @@ add_action('elementor/init', 'category_elementor_init');
 
 
 function register_plugin_styles() {
+    wp_enqueue_style('tidy-core-bootstrap', plugin_dir_url(__FILE__) . '/assets/css/bootstrap.css', array(), '0.1.0', 'all');
     wp_enqueue_style('tidy-core-styles', plugin_dir_url(__FILE__) . '/assets/css/style.css', array(), '0.1.0', 'all');
+    wp_enqueue_style('tidy-core-global', plugin_dir_url(__FILE__) . '/assets/css/global.css', array(), '0.1.0', 'all');
     wp_enqueue_script( 'tidy-core-script', plugin_dir_url(__FILE__) . 'assets/js/main.min.js', array('jquery'), '0.1.0', true );
 }
 add_action( 'wp_enqueue_scripts', 'register_plugin_styles' );
@@ -73,3 +77,5 @@ add_action( 'save_post', function( $post_id ) {
 } );
 
 $tour_duration = get_post_meta(1903, 'tour_duration', true );
+
+require_once( __DIR__ . '/helper/functions.php' );
