@@ -38,7 +38,13 @@ class TIDY_CORE_Products extends \Elementor\Widget_Base
             'posts_per_page' => 6,
         );
         // The Query
-        $the_query = new WP_Query( $args )
+        $the_query = new WP_Query( $args );
+
+        $get_all_product_category = get_terms( array(
+            'taxonomy'   => 'product_cat',
+            'hide_empty' => true,
+        ) );
+
 
     ?>
         <section id="tidy-products" class="container_9 clearfix col2-right">
@@ -112,33 +118,16 @@ class TIDY_CORE_Products extends \Elementor\Widget_Base
 
             <!-- Right -->
             <aside id="right_column" class="column grid_2 omega">
-
                 <!-- Block categories module -->
                 <div id="categories_block_left" class="block">
                     <h4 class="title_block">Categories</h4>
                     <div class="block_content">
                         <ul class="tree dhtml">
-                            <li> <a href="/" title="">Living Room</a>
-                                <ul>
-                                    <li> <a href="/" title="">Chairs</a> </li>
-                                    <li> <a href="/" title="">Sofas</a> </li>
-                                    <li> <a href="/" title="">Tables</a> </li>
-                                    <li> <a href="/" title="">Wardrobes</a> </li>
-                                </ul>
-                            </li>
-                            <li> <a href="/" title="">DedRoom</a>
-                                <ul>
-                                    <li> <a href="/" title="">Sofas</a> </li>
-                                    <li> <a href="/" title="">Wardrobes</a> </li>
-                                </ul>
-                            </li>
-                            <li> <a href="/" title="">Dining Room</a>
-                                <ul>
-                                    <li> <a href="/" title="">Wardrobes</a> </li>
-                                    <li> <a href="/" title="">Tables</a> </li>
-                                    <li> <a href="/" title="">Chairs</a> </li>
-                                </ul>
-                            </li>
+                            <?php foreach( $get_all_product_category as $category ) : ?>
+                                <li> 
+                                    <a href="<?php echo get_term_link($category->slug, 'product_cat'); ?>" data-slug="<?php echo $category->slug ?>"><?php echo $category->name ?></a>
+                                </li>
+                            <?php endforeach; ?>
                         </ul>
                     </div>
                 </div>

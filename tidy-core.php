@@ -46,6 +46,18 @@ function register_plugin_styles() {
     wp_enqueue_style('tidy-core-styles', plugin_dir_url(__FILE__) . '/assets/css/style.css', array(), '0.1.0', 'all');
     wp_enqueue_style('tidy-core-global', plugin_dir_url(__FILE__) . '/assets/css/global.css', array(), '0.1.0', 'all');
     wp_enqueue_script( 'tidy-core-script', plugin_dir_url(__FILE__) . 'assets/js/main.min.js', array('jquery'), '0.1.0', true );
+    wp_enqueue_script( 'tidy-core-ajax-handler', plugin_dir_url(__FILE__) . 'assets/js/ajax_handler.js', array('jquery'), '0.1.0', true );
+      // admin url -> siteurl/wp-admin/
+      // to pass data from php to js 
+
+    wp_localize_script(
+        'tidy-core-ajax-handler',
+        'ajax_handler',
+        [
+            'ajax_url' => admin_url( 'admin-ajax.php' ),
+            'post_id'  => get_the_ID(),
+        ] 
+    );
 }
 add_action( 'wp_enqueue_scripts', 'register_plugin_styles' );
 

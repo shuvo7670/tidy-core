@@ -28,8 +28,9 @@ class TIDY_CORE_Book extends \Elementor\Widget_Base {
 
 	protected function render() {
         $settings = $this->get_settings_for_display();
+
         $get_all_book_category = get_terms( array(
-            'taxonomy' => 'book-category',
+            'taxonomy'   => 'book-category',
             'hide_empty' => false,
         ) );
 
