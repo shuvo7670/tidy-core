@@ -40,9 +40,17 @@ class TIDY_CORE_Products extends \Elementor\Widget_Base
         // The Query
         $the_query = new WP_Query( $args );
 
+        // get all product category
         $get_all_product_category = get_terms( array(
             'taxonomy'   => 'product_cat',
             'hide_empty' => true,
+        ) );
+
+
+        // get all product brand
+        $get_all_product_brand = get_terms( array(
+            'taxonomy'   => 'product_brand',
+            'hide_empty' => false,
         ) );
 
 
@@ -60,10 +68,14 @@ class TIDY_CORE_Products extends \Elementor\Widget_Base
                     </div>
                     <div class="sort-select">
                         <label>Show</label>
-                        <select class="selectBox">
-                            <option>5 per page</option>
-                            <option>7 per page</option>
-                            <option>9 per page</option>
+                        <select id="posts_per_page" class="selectBox">
+                            <option value="1">1 per page</option>
+                            <option value="2">2 per page</option>
+                            <option value="3">3 per page</option>
+                            <option value="4">4 per page</option>
+                            <option value="5">5 per page</option>
+                            <option value="6">6 per page</option>
+                            <option value="7">7 per page</option>
                         </select>
                     </div>
                     <div class="lg-panel htabs">
@@ -119,7 +131,7 @@ class TIDY_CORE_Products extends \Elementor\Widget_Base
             <!-- Right -->
             <aside id="right_column" class="column grid_2 omega">
                 <!-- Block categories module -->
-                <div id="categories_block_left" class="block">
+                <div id="categories_block_left" class="block category_block_left">
                     <h4 class="title_block">Categories</h4>
                     <div class="block_content">
                         <ul class="tree dhtml">
@@ -132,6 +144,21 @@ class TIDY_CORE_Products extends \Elementor\Widget_Base
                     </div>
                 </div>
                 <!-- /Block categories module -->
+
+                <!-- Block Brands module -->
+                <div id="categories_block_left" class="block brand_block_left">
+                    <h4 class="title_block">Brands</h4>
+                    <div class="block_content">
+                        <ul class="tree dhtml">
+                            <?php foreach( $get_all_product_brand as $brand ) : ?>
+                                <li> 
+                                    <a href="<?php echo get_term_link($brand->slug, 'product_brand'); ?>" data-slug="<?php echo $brand->slug ?>"><?php echo $brand->name ?></a>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                </div>
+                <!-- /Block brands module -->
 
                 <!-- Block CMS module -->
                 <div class="block" id="layered_block_left">

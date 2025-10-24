@@ -52,9 +52,9 @@ function register_plugin_styles() {
 
     wp_localize_script(
         'tidy-core-ajax-handler',
-        'ajax_handler',
+        'ajax_handler', 
         [
-            'ajax_url' => admin_url( 'admin-ajax.php' ),
+            'ajax_url' => admin_url( 'admin-ajax.php' ),           
             'post_id'  => get_the_ID(),
         ] 
     );

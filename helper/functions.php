@@ -65,19 +65,29 @@ add_action( 'wp_ajax_nopriv_get_product_data', 'get_product_data' );
 
 function get_product_data(){
 
-    $category = !empty( $_POST['category'] ) ? sanitize_text_field( $_POST['category'] ) : '';
+    $category       = !empty( $_POST['category'] ) ? sanitize_text_field( $_POST['category'] ) : '';
+    $brand          = !empty( $_POST['brand'] ) ? sanitize_text_field( $_POST['brand'] ) : '';
+    $posts_per_page = !empty( $_POST['posts_per_page'] ) ? sanitize_text_field( $_POST['posts_per_page'] ) : 6;
 
     $args = array(
         'post_type'      => 'product',
-        'posts_per_page' => 6,
-        'tax_query'      => array(
-            array(
+        'posts_per_page' => $posts_per_page,
+    );
+    if( !empty( $category ) ) {
+        $args['tax_query'][] = array(
                 'taxonomy' => 'product_cat',
                 'field'    => 'slug',
                 'terms'    => $category,
-            ),
-        ),
-    );
+        );
+    }
+    if( !empty( $brand ) ) {
+        $args['tax_query'][] = array(
+                'taxonomy' => 'product_brand',
+                'field'    => 'slug',
+                'terms'    => $brand,
+        );
+    }
+
     // The Query
     $the_query = new WP_Query( $args );
     ?>
