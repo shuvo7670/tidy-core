@@ -6238,3 +6238,87 @@ html .fifth-brd{
 ul {
     padding: 0 !important;
 }
+
+
+
+.pagination {
+ display: inline-block;
+    margin: 20px 0;
+    width: 100%;
+}
+
+.pagination {
+ display: inline-block;
+    margin-bottom: 0;
+    margin-left: 0;
+    margin-top: -10px;
+    vertical-align: top;
+}
+
+.pagination {
+  display: inline;
+}
+
+
+
+.pagination > a,
+.pagination > span {
+  display: block;
+    float: left;
+    line-height: 20px;
+    text-decoration: none;
+}
+
+.pagination > a, .pagination span {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #E1E1E1;
+    color: #949494;
+    float: left;
+    font-size: 13px;
+    line-height: 20px;
+    margin: 0 2px;
+    padding: 4px 12px;
+    text-decoration: none;
+}
+
+.pagination ul > .disabled > span,
+.pagination ul > .disabled > a,
+.pagination ul > .disabled > a:hover,
+.pagination ul > .disabled > a:focus {
+  cursor: default;
+  background-color: transparent;
+}
+
+.pagination .item-total{
+  float: left;
+    font-size: 13px;
+}
+
+.pagination ul{
+	float:right;
+}
+
+
+.pagination .active a{
+	color:#fff;
+	border:#ed5e08 1px solid;
+	
+}
+.pagination ul li:hover a{
+	color:#fff;
+		    transition: all 0.6s ease 0s;
+}
+
+.pagination-centered {
+  text-align: center;
+}
+
+.pagination-right {
+  text-align: right;
+}
+
+.pagination .current{
+	background-color:#90c322;
+	border-color:#90c322;
+	color: #fff;
+}

@@ -35,7 +35,8 @@ class TIDY_CORE_Products extends \Elementor\Widget_Base
         $settings        = $this->get_settings_for_display();
         $args = array(
             'post_type'      => 'product',
-            'posts_per_page' => 6,
+            'posts_per_page' => 5,
+            'paged'          => max( 1, get_query_var('paged') ),
         );
         // The Query
         $the_query = new WP_Query( $args );
@@ -111,21 +112,16 @@ class TIDY_CORE_Products extends \Elementor\Widget_Base
                         }
                     wp_reset_postdata();
                     ?>
+                    <div class="pagination" id="product-pagination">
+                        <?php 
+                            $big = 999999999; // need an unlikely integer
+                            echo paginate_links( array(
+                                'current' => max( 1, get_query_var('paged') ),
+                                'total'   => $the_query->max_num_pages
+                            ) );
+                        ?>
+                    </div>
                 </ol>
-
-
-                <div class="pagination">
-                    <div class="item-total"> Items 1 to 9 of 12 total </div>
-                    <ul>
-                        <li><a href="#">«</a></li>
-                        <li class="active first-bg-hover"><a href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">4</a></li>
-                        <li><a href="#">5</a></li>
-                        <li><a href="#">»</a></li>
-                    </ul>
-                </div>
             </article>
 
             <!-- Right -->

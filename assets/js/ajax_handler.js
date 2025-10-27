@@ -1,10 +1,11 @@
 // example.com/wp-admin/admin-ajax.php 
 
 let query = {
-    action: 'get_product_data',
-    category: '',
-    brand: '',
+    action        : 'get_product_data',
+    category      : '',
+    brand         : '',
     posts_per_page: '',
+    paged         : '',
 }
 
 
@@ -28,6 +29,15 @@ jQuery('#posts_per_page').on('change',function(event){
     event.preventDefault();
     const posts_per_page = jQuery(this).val();  
     query.posts_per_page = posts_per_page;   
+    fetchData();
+});
+
+// pagination link ajax request
+jQuery(document).on('click','#product-pagination a',function(event){
+    event.preventDefault();
+    const url_format = jQuery(this).attr('href');
+    const paged = url_format.match(/\/page\/(\d+)\//);
+    query.paged = paged[1]; 
     fetchData();
 });
 
