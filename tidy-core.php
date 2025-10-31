@@ -86,6 +86,14 @@ add_action( 'save_post', function( $post_id ) {
             sanitize_text_field( $_POST['tour_duration'] )
         );
     }
+
+    if ( isset( $_POST['added_by'] ) ) {
+        update_post_meta(
+            $post_id,
+            'added_by',
+            sanitize_text_field( $_POST['added_by'] )
+        );
+    }
 } );
 
 $tour_duration = get_post_meta(1903, 'tour_duration', true );

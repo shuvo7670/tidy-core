@@ -9,6 +9,15 @@ register_post_meta('tour', 'tour_duration', array(
     'auth_callback'     => '__return_true', // Allow all logged-in users to edit (adjust as needed)
 ));
 
+register_post_meta('product', 'added_by', array(
+    'show_in_rest'      => true, // Expose to the REST API for Gutenberg
+    'single'            => true, // It holds one value
+    'type'              => 'string', // Data type
+    'sanitize_callback' => 'sanitize_text_field',
+    'auth_callback'     => '__return_true', // Allow all logged-in users to edit (adjust as needed)
+));
+
+
 register_post_meta('book', 'author_name', array(
     'show_in_rest'      => true, // Expose to the REST API for Gutenberg
     'single'            => true, // It holds one value
@@ -39,6 +48,35 @@ add_action('add_meta_boxes', function () {
         'default'                     // Priority
     );
 });
+
+add_action('add_meta_boxes', function () {
+    add_meta_box(
+        'added_by',            // ID
+        'Added By',                // Title
+        'render_product_added_by', // Callback
+        'product',                       // Post type
+        'normal',                       // Context (normal, side, advanced)
+        'default'                     // Priority
+    );
+});
+
+
+function render_product_added_by($post)
+{
+    $added_by = get_post_meta($post->ID, 'added_by', true);
+?>
+    <table class="form-table" role="presentation">
+        <tbody>
+            <tr class="form-field form-required">
+                <th scope="row"><label for="added_by">Added By</label></th>
+                <td>
+                    <input name="added_by" type="text" id="added_by" value="<?php echo $added_by ?>">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+<?php
+}
 
 
 function render_tour_details_metabox($post)

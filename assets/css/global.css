@@ -2414,8 +2414,10 @@ html .ui-slider-handle {
 	opacity: 0.95;
 }
 .products-grid {
-	display: inline-block;
-	position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
 }
 .products-grid.last {
 	border-bottom: 0 none;
@@ -2431,7 +2433,7 @@ html .ui-slider-handle {
 	margin: 0 27px 27px 0;
 	position: relative;
 	transition: all 1s ease 0s;
-	width: 270px;
+	width: 250px;
 }
 .products-grid li.item.last {
 	margin-right:0 !important;
@@ -6321,4 +6323,8 @@ ul {
 	background-color:#90c322;
 	border-color:#90c322;
 	color: #fff;
+}
+
+.no-fix {
+	height: 0;
 }

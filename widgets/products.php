@@ -62,10 +62,8 @@ class TIDY_CORE_Products extends \Elementor\Widget_Base
             <article id="center_column" class=" grid_5">
                 <div class="toolbar">
                     <div class="sort-select">
-                        <label>Sort by</label>
-                        <select class="selectBox">
-                            <option>Position</option>
-                        </select>
+                        <label>Search</label>
+                        <input id="search" type="text">
                     </div>
                     <div class="sort-select">
                         <label>Show</label>
@@ -75,36 +73,41 @@ class TIDY_CORE_Products extends \Elementor\Widget_Base
                             <option value="3">3 per page</option>
                             <option value="4">4 per page</option>
                             <option value="5">5 per page</option>
-                            <option value="6">6 per page</option>
+                            <option value="6" selected>6 per page</option>
                             <option value="7">7 per page</option>
+                            <option value="8">8 per page</option>
+                            <option value="9">9 per page</option>
+                            <option value="10">10 per page</option>
                         </select>
                     </div>
-                    <div class="lg-panel htabs">
+                    <div class="lg-panel htabs" id="product-layout">
                         <label>View</label>
-                        <a href="product-list.html" class="list-btn first-bg active" id="list"></a> <a class="grid-btn  first-bg " id="grid" href="product-grid.html"></a>
+                        <a href="#" class="list-btn first-bg active" id="list"></a> 
+                        <a class="grid-btn  first-bg " id="grid" href="#"></a>
                     </div>
                 </div>
-                <ol id="products-list" class="products-list">
+                <div id="product-item-wrapper">
+                    <ol id="products-list" class="products-list">
                     <?php
                         if( $the_query->have_posts() ) {
                                 while ( $the_query->have_posts() ) {
                                     $the_query->the_post();
+                                    $product = wc_get_product( get_the_ID() );
                     ?>
                         <li class="item fadeIn animated"> 
-                            <a rel="prettyPhoto[pp_gal]" class="product-image" title="" href="product.html">
+                            <a rel="prettyPhoto[pp_gal]" class="product-image" title="" href="<?php echo get_the_permalink() ?>">
                                 <?php the_post_thumbnail() ?>
                             </a>
                             <div class="product-shop">
                                 <div class="no-fix">
-                                    <h2 class="product-name"><a title="" href="product.html"><?php echo get_the_title() ?></a></h2>
-                                    <div class="price-box"> <span id="product-price-51" class="regular-price"> <span class="price">$299.99</span> </span> </div>
-                                    <div class="desc std">
+                                    <h2 class="product-name"><a title="" href="<?php echo get_the_permalink() ?>"><?php echo get_the_title() ?></a></h2>
+                                        <div class="price-box"> <span id="product-price-51" class="regular-price">
+                                            <span class="price"><?php echo $product->get_price_html(); ?></span> </span>
+                                        </div>                                
+                                        <div class="desc std">
                                         <?php echo wp_trim_words( get_the_content(),'100', '...') ?>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="btn-set">
-                                <div class="actions"> <a class="btn-circle first-bg-hover"> <i class="icon-heart"></i> </a> <a class="btn-circle first-bg-hover"> <i class="icon-shopping-cart"></i> </a> <a class="btn-circle first-bg-hover"> <i class="icon-exchange"></i> </a> </div>
                             </div>
                         </li>
                         <?php 
@@ -112,6 +115,7 @@ class TIDY_CORE_Products extends \Elementor\Widget_Base
                         }
                     wp_reset_postdata();
                     ?>
+                    </ol>
                     <div class="pagination" id="product-pagination">
                         <?php 
                             $big = 999999999; // need an unlikely integer
@@ -121,7 +125,7 @@ class TIDY_CORE_Products extends \Elementor\Widget_Base
                             ) );
                         ?>
                     </div>
-                </ol>
+                </div>
             </article>
 
             <!-- Right -->
@@ -133,7 +137,7 @@ class TIDY_CORE_Products extends \Elementor\Widget_Base
                         <ul class="tree dhtml">
                             <?php foreach( $get_all_product_category as $category ) : ?>
                                 <li> 
-                                    <a href="<?php echo get_term_link($category->slug, 'product_cat'); ?>" data-slug="<?php echo $category->slug ?>"><?php echo $category->name ?></a>
+                                    <a href="<?php echo get_term_link($category->slug, 'product_cat'); ?>" data-slug="<?php echo $category->slug ?>"><?php echo $category->name ?> ( <?php echo $category->count ?? '' ?> )</a>
                                 </li>
                             <?php endforeach; ?>
                         </ul>
@@ -148,7 +152,7 @@ class TIDY_CORE_Products extends \Elementor\Widget_Base
                         <ul class="tree dhtml">
                             <?php foreach( $get_all_product_brand as $brand ) : ?>
                                 <li> 
-                                    <a href="<?php echo get_term_link($brand->slug, 'product_brand'); ?>" data-slug="<?php echo $brand->slug ?>"><?php echo $brand->name ?></a>
+                                    <a href="<?php echo get_term_link($brand->slug, 'product_brand'); ?>" data-slug="<?php echo $brand->slug ?>"><?php echo $brand->name ?> (<?php echo $brand->count ?? '' ?>)</a>
                                 </li>
                             <?php endforeach; ?>
                         </ul>

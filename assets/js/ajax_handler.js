@@ -6,6 +6,8 @@ let query = {
     brand         : '',
     posts_per_page: '',
     paged         : '',
+    layout        : 'list',
+    search        : '',
 }
 
 
@@ -37,16 +39,46 @@ jQuery(document).on('click','#product-pagination a',function(event){
     event.preventDefault();
     const url_format = jQuery(this).attr('href');
     const paged = url_format.match(/\/page\/(\d+)\//);
-    query.paged = paged[1]; 
+    if( paged ) {
+        query.paged = paged[1]; 
+    }else {
+        query.paged = jQuery(this).text();
+    }
     fetchData();
 });
 
+// Grid and list view toggle
+jQuery('#product-layout #list').on('click',function(event){
+    event.preventDefault();
+    query.layout = 'list';
+    fetchData();
+});
+jQuery('#product-layout #grid').on('click',function(event){
+    event.preventDefault();
+    query.layout = 'grid';
+    fetchData();
+});
+
+// Search functionality
+let debounceTimer;
+jQuery('#search').on('keyup', function (event) {
+    event.preventDefault();
+    const search = jQuery(this).val();
+    query.search = search;
+    query.paged = '';
+
+    clearTimeout(debounceTimer);
+
+    debounceTimer = setTimeout(() => {
+        fetchData();
+    }, 1000); // 3 seconds
+});
 
 function fetchData(){
      jQuery.post(ajax_handler.ajax_url, 
         query, 
         function(data) {
-            jQuery('#products-list').empty().html(data);
+            jQuery('#product-item-wrapper').empty().html(data);
         }
     );
 }

@@ -65,15 +65,19 @@ add_action( 'wp_ajax_nopriv_get_product_data', 'get_product_data' );
 
 function get_product_data(){
 
-    $category       = !empty( $_POST['category'] ) ? sanitize_text_field( $_POST['category'] ) : '';
-    $brand          = !empty( $_POST['brand'] ) ? sanitize_text_field( $_POST['brand'] ) : '';
-    $posts_per_page = !empty( $_POST['posts_per_page'] ) ? sanitize_text_field( $_POST['posts_per_page'] ) : 6;
-    $paged          = !empty( $_POST['paged'] ) ? sanitize_text_field( $_POST['paged'] ) : 1;
+    $category               = !empty( $_POST['category'] ) ? sanitize_text_field( $_POST['category'] ) : '';
+    $brand                  = !empty( $_POST['brand'] ) ? sanitize_text_field( $_POST['brand'] ) : '';
+    $paged                  = !empty( $_POST['paged'] ) ? sanitize_text_field( $_POST['paged'] ) : 1;
+    $layout                 = !empty( $_POST['layout'] ) ? sanitize_text_field( $_POST['layout'] ) : 'list';
+    $default_posts_per_page = $layout == 'grid' ? 9 : 6;
+    $posts_per_page         = !empty( $_POST['posts_per_page'] ) ? sanitize_text_field( $_POST['posts_per_page'] ) : $default_posts_per_page;
+    $search                 = !empty( $_POST['search'] ) ? sanitize_text_field( $_POST['search'] ) : '';
 
     $args = array(
         'post_type'      => 'product',
         'posts_per_page' => $posts_per_page,
         'paged'          => max( 1, $paged ),
+        's'              => $search,
     );
     if( !empty( $category ) ) {
         $args['tax_query'][] = array(
@@ -90,36 +94,60 @@ function get_product_data(){
         );
     }
 
+    // if( !empty( $search ) ) {
+    //     $args['meta_query'][] = array(
+    //             'key'     => 'added_by',
+    //             'value'   => $search,
+    //             'compare' => 'LIKE',
+    //     );
+    // }
+
     // The Query
     $the_query = new WP_Query( $args );
     ?>
+     <ol id="products-list" class="<?php echo $layout == 'grid' ? 'products-grid' : 'products-list' ?>">
         <?php
             if( $the_query->have_posts() ) {
                 while ( $the_query->have_posts() ) {
                     $the_query->the_post();
+                    $get_thumnail_url = get_the_post_thumbnail_url( get_the_ID(), 'full' );
+                    $product = wc_get_product( get_the_ID() );
+
         ?>
-            <li class="item fadeIn animated"> 
-                <a rel="prettyPhoto[pp_gal]" class="product-image" title="" href="product.html">
-                    <?php the_post_thumbnail() ?>
-                </a>
-                <div class="product-shop">
-                    <div class="no-fix">
-                        <h2 class="product-name"><a title="" href="product.html"><?php echo get_the_title() ?></a></h2>
-                        <div class="price-box"> <span id="product-price-51" class="regular-price"> <span class="price">$299.99</span> </span> </div>
-                        <div class="desc std">
-                            <?php echo wp_trim_words( get_the_content(),'100', '...') ?>
+            <?php if( $layout == 'list' ) : ?>
+                <li class="item fadeIn animated"> 
+                    <a rel="prettyPhoto[pp_gal]" class="product-image" title="" href="<?php echo get_the_permalink() ?>">
+                        <?php the_post_thumbnail() ?>
+                    </a>
+                    <div class="product-shop">
+                        <div class="no-fix">
+                            <h2 class="product-name"><a title="" href="<?php echo get_the_permalink() ?>"><?php echo get_the_title() ?></a></h2>
+                            <div class="price-box"> <span id="product-price-51" class="regular-price">
+                                <span class="price"><?php echo $product->get_price_html(); ?></span> </span>
+                            </div>
+                            <div class="desc std">
+                                <?php echo wp_trim_words( get_the_content(),'100', '...') ?>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="btn-set">
-                    <div class="actions"> <a class="btn-circle first-bg-hover"> <i class="icon-heart"></i> </a> <a class="btn-circle first-bg-hover"> <i class="icon-shopping-cart"></i> </a> <a class="btn-circle first-bg-hover"> <i class="icon-exchange"></i> </a> </div>
-                </div>
-            </li>
+                </li>
+            <?php else : ?>
+                <li class="item first fadeIn animated" style="text-align: center;"> 
+                    <a rel="prettyPhoto[pp_gal]" class="fa-search-btn first-bg"  href="<?php echo $get_thumnail_url ?>"> enlarge image <i class="icon-search"></i></a> 
+                    <a class="product-image" title="Product Name" href="<?php echo get_the_permalink() ?>"> 
+                        <?php the_post_thumbnail() ?>
+                    </a>
+                    <h2 class="product-name"> <a title="<?php echo get_the_title() ?>" href="<?php echo get_the_permalink() ?>"> <?php echo get_the_title() ?> </a> </h2>
+                    <a class="btn" style="margin-bottom: 10px;"> View More</a> 
+                    </div>
+                </li>
+            <? endif; ?>
         <?php 
             }
         }
 
         ?>
+        </ol>
         <div class="pagination" id="product-pagination">
             <?php 
                 echo paginate_links( array(
