@@ -8,6 +8,7 @@ let query = {
     paged         : '',
     layout        : 'list',
     search        : '',
+    nonce         : ajax_handler.nonece
 }
 
 
@@ -20,9 +21,9 @@ jQuery('.category_block_left ul li a').on('click',function(event){
 });
 
 // Ajax request for brand filter
-jQuery('.brand_block_left ul li a').on('click',function(event){
+jQuery('.brand_block_left #brand-filter').on('change',function(event){
     event.preventDefault();
-    const brand = jQuery(this).attr('data-slug'); 
+    const brand = jQuery(this).val(); 
     query.brand = brand;   
     fetchData();
 });

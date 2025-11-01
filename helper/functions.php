@@ -64,6 +64,19 @@ add_action( 'wp_ajax_get_product_data', 'get_product_data' );
 add_action( 'wp_ajax_nopriv_get_product_data', 'get_product_data' );
 
 function get_product_data(){
+    $nonce  = !empty( $_POST['nonce'] ) ? sanitize_text_field( $_POST['nonce'] ) : '';
+
+    // verify nonce 
+    if ( ! wp_verify_nonce( $nonce, 'ajax_product_filter' ) ) {
+        wp_send_json_error( 'Invalid nonce' );
+        wp_die();
+    }
+
+
+    // if( !current_user_can('edit_others_posts') ) {
+    //     wp_send_json_error( 'Unauthorized user' );
+    //     wp_die();
+    // }
 
     $category               = !empty( $_POST['category'] ) ? sanitize_text_field( $_POST['category'] ) : '';
     $brand                  = !empty( $_POST['brand'] ) ? sanitize_text_field( $_POST['brand'] ) : '';
@@ -83,7 +96,7 @@ function get_product_data(){
         $args['tax_query'][] = array(
                 'taxonomy' => 'product_cat',
                 'field'    => 'slug',
-                'terms'    => $category,
+                'terms'    => [$category],
         );
     }
     if( !empty( $brand ) ) {

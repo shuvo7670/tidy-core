@@ -54,7 +54,8 @@ function register_plugin_styles() {
         'tidy-core-ajax-handler',
         'ajax_handler', 
         [
-            'ajax_url' => admin_url( 'admin-ajax.php' ),           
+            'ajax_url' => admin_url( 'admin-ajax.php' ),
+            'nonece'   => wp_create_nonce( 'ajax_product_filter' ),
             'post_id'  => get_the_ID(),
         ] 
     );
@@ -99,3 +100,8 @@ add_action( 'save_post', function( $post_id ) {
 $tour_duration = get_post_meta(1903, 'tour_duration', true );
 
 require_once( __DIR__ . '/helper/functions.php' );
+require_once( __DIR__ . '/helper/cron.php' );
+
+
+
+// update_option('tidy_core_version', '1.0.1' );

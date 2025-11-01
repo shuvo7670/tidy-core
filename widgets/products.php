@@ -148,85 +148,16 @@ class TIDY_CORE_Products extends \Elementor\Widget_Base
                 <!-- Block Brands module -->
                 <div id="categories_block_left" class="block brand_block_left">
                     <h4 class="title_block">Brands</h4>
-                    <div class="block_content">
-                        <ul class="tree dhtml">
-                            <?php foreach( $get_all_product_brand as $brand ) : ?>
-                                <li> 
-                                    <a href="<?php echo get_term_link($brand->slug, 'product_brand'); ?>" data-slug="<?php echo $brand->slug ?>"><?php echo $brand->name ?> (<?php echo $brand->count ?? '' ?>)</a>
-                                </li>
+                    <div class="block_content" style="padding: 10px 10px;">
+                        <select id="brand-filter" class="selectBox">
+                            <option value="">Select Brand</option>
+                           <?php foreach( $get_all_product_brand as $brand ) : ?>
+                                <option value="<?php echo $brand->slug ?>"><?php echo $brand->name ?> (<?php echo $brand->count ?? '' ?>)</option>
                             <?php endforeach; ?>
-                        </ul>
+                        </select>
                     </div>
                 </div>
                 <!-- /Block brands module -->
-
-                <!-- Block CMS module -->
-                <div class="block" id="layered_block_left">
-                    <h4 class="title_block">Filter By</h4>
-                    <div class="block_content">
-                        <form id="layered_form" action="#">
-                            <div>
-                                <div> <span class="layered_subtitle">Categories</span>
-                                    <div class="clear"></div>
-                                    <ul class="Hide" id="ul_layered_category_0">
-                                        <li>
-                                            <input type="checkbox" id="layered_category_1" class="checkbox">
-                                            <label for="layered_category_1"> Jackets<span> (1)</span> </label>
-                                        </li>
-                                        <li>
-                                            <input type="checkbox" id="layered_category_2" class="checkbox">
-                                            <label for="layered_category_2"> Chairs <span> (10)</span> </label>
-                                        </li>
-                                        <li>
-                                            <input type="checkbox" id="layered_category_3" class="checkbox">
-                                            <label for="layered_category_3"> Kids & Babies<span> (1)</span> </label>
-                                        </li>
-                                        <li>
-                                            <input type="checkbox" id="layered_category_4" class="checkbox">
-                                            <label for="layered_category_4"> Electronics <span> (1)</span></label>
-                                        </li>
-                                        <li>
-                                            <input type="checkbox" id="layered_category_5" class="checkbox">
-                                            <label for="layered_category_5"> Jackets<span> (1)</span></label>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div> <span class="layered_subtitle">Condition</span>
-                                    <div class="clear"></div>
-                                    <ul class="Hide" id="ul_layered_condition_0">
-                                        <li>
-                                            <input type="checkbox" id="layered_Condition_1" class="checkbox">
-                                            <label for="layered_Condition_1"> New<span> (1)</span></label>
-                                        </li>
-                                        <li>
-                                            <input type="checkbox" id="layered_Condition_2" class="checkbox">
-                                            <label for="layered_Condition_2">Old<span> (1)</span></label>
-                                        </li>
-                                    </ul>
-                                </div>
-
-                                <!-- bxSlider Javascript file -->
-                                <script src="js/jquery.slider.min.js"></script>
-
-                                <!-- Javascripts All -->
-                                <script src="js/scripts.js"></script>
-                                <!-- Javascripts -->
-                                <script src="js/jquery.nouislider.min.js"></script>
-                                <link rel="stylesheet" href="css/nouislider.fox.css" type="text/css" media="screen" />
-                                <div class="layered_price"> <span class="layered_subtitle">Price</span>
-                                    <div class="clear"></div>
-                                    <ul id="ul_layered_price_0" class="Hide">
-                                        <div class="section-body">
-                                            <div class="range-slider-container">
-                                                <div class="range-slider"></div>
-                                                <div class="range-slider-value clearfix"> <span class="min"></span> <span class="max"></span> </div>
-                                            </div>
-                                        </div>
-                                    </ul>
-                                </div>
-                        </form>
-                    </div>
-                </div>
             </aside>
         </section>
 <?php
