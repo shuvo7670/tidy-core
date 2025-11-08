@@ -83,3 +83,21 @@ function fetchData(){
         }
     );
 }
+
+
+
+// Add to cart functionality for tour
+jQuery('#tour_add_to_cart').on('click',function(){
+    const tour_id = jQuery(this).data('tour-id');
+    const adult_quantity = jQuery('#tour_quantity').val();
+    jQuery.post(ajax_handler.ajax_url, 
+        {
+            action : 'tour_add_to_cart',
+            tour_id: tour_id,
+            adult_quantity: adult_quantity,
+        }, 
+        function(data) {
+            jQuery('#product-item-wrapper').empty().html(data);
+        }
+    );
+});

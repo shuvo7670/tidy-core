@@ -175,3 +175,61 @@ function get_product_data(){
     <?php 
     wp_die();
 }
+
+
+
+
+// AJAX Handler for getting product data
+add_action( 'wp_ajax_tour_add_to_cart', 'tour_add_to_cart' );
+add_action( 'wp_ajax_nopriv_tour_add_to_cart', 'tour_add_to_cart' );
+
+function tour_add_to_cart() {
+    $tour_id        = !empty( $_POST['tour_id'] ) ? sanitize_text_field( $_POST['tour_id'] ) : '';
+    $adult_quantity = !empty( $_POST['adult_quantity'] ) ? sanitize_text_field( $_POST['adult_quantity'] ) : '';
+    $cart_data                   = array();
+    $cart_data['tour_id']        = $tour_id;
+    $cart_data['adult_quantity'] = $adult_quantity;
+    WC()->cart->add_to_cart(intval($tour_id), 1, '0', array(), $cart_data);
+}
+
+add_action('woocommerce_before_calculate_totals', 'calculate_total', 30, 1);
+
+function calculate_total( $cart ) {
+    foreach ( $cart->get_cart() as $cart_item ) {
+        $tour_id        = $cart_item['tour_id'];
+        $adult_quantity = $cart_item['adult_quantity'];
+        if( empty( $tour_id ) ) {
+            continue;
+        }
+        $tour_price  = get_post_meta($tour_id, 'tour_price', true);
+        $product     = $cart_item['data'];
+        $total_price = intval($tour_price) * intval($adult_quantity);
+        $product->set_price( intval($total_price) );
+    }
+}
+
+
+add_filter('woocommerce_get_item_data', 'add_meta_to_cart', 30, 2);
+
+function add_meta_to_cart( $item_data, $cart_item ) {
+    if( empty( $cart_item['tour_id'] ) ) {
+        return $item_data;
+    }
+    $item_data[] = array(
+        'name'    => 'Adult Quantity',
+        'value'   => $cart_item['adult_quantity'],
+        'display' => '',
+    );
+    return $item_data;
+}
+
+
+add_action('woocommerce_add_order_item_meta', 'add_custom_data_to_order_item_meta', 10, 2);
+
+function add_custom_data_to_order_item_meta( $item_id, $cart_item ) {
+    if( empty( $cart_item['tour_id'] ) ) {
+        return;
+    }
+    wc_add_order_item_meta( $item_id, 'Adult Quantity', $cart_item['adult_quantity'] );
+}
+

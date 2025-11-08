@@ -8,8 +8,11 @@
  * Author URI: https://maktechsolution.com/
  * License:           GPL v2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
+ * Requires Plugins: 
  * Text Domain: tidy-core
 */
+
+// Requires Plugins woocommerce
 
 function register_tidy_core_widgets( $widgets_manager ) {
 	require_once( __DIR__ . '/widgets/hero.php' );
@@ -68,6 +71,7 @@ add_action('init', 'tidy_core_init');
 function tidy_core_init() {
     require_once( __DIR__ . '/helper/cpt.php' );
     require_once( __DIR__ . '/helper/meta.php' );
+    require_once( __DIR__ . '/helper/wc_product_extend.php' );
 }
 
 add_action( 'save_post', function( $post_id ) {
@@ -85,6 +89,13 @@ add_action( 'save_post', function( $post_id ) {
             $post_id,
             'tour_duration',
             sanitize_text_field( $_POST['tour_duration'] )
+        );
+    }
+    if ( isset( $_POST['tour_price'] ) ) {
+        update_post_meta(
+            $post_id,
+            'tour_price',
+            sanitize_text_field( $_POST['tour_price'] )
         );
     }
 

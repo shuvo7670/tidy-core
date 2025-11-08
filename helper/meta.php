@@ -8,6 +8,13 @@ register_post_meta('tour', 'tour_duration', array(
     'sanitize_callback' => 'sanitize_text_field',
     'auth_callback'     => '__return_true', // Allow all logged-in users to edit (adjust as needed)
 ));
+register_post_meta('tour', 'tour_price', array(
+    'show_in_rest'      => true, // Expose to the REST API for Gutenberg
+    'single'            => true, // It holds one value
+    'type'              => 'string', // Data type
+    'sanitize_callback' => 'sanitize_text_field',
+    'auth_callback'     => '__return_true', // Allow all logged-in users to edit (adjust as needed)
+));
 
 register_post_meta('product', 'added_by', array(
     'show_in_rest'      => true, // Expose to the REST API for Gutenberg
@@ -82,6 +89,7 @@ function render_product_added_by($post)
 function render_tour_details_metabox($post)
 {
     $tour_duration = get_post_meta($post->ID, 'tour_duration', true);
+    $tour_price    = get_post_meta($post->ID, 'tour_price', true);
 ?>
     <table class="form-table" role="presentation">
         <tbody>
@@ -89,6 +97,12 @@ function render_tour_details_metabox($post)
                 <th scope="row"><label for="tour_duration">Tour Duration</label></th>
                 <td>
                     <input name="tour_duration" type="text" id="tour_duration" value="<?php echo $tour_duration ?>">
+                </td>
+            </tr>
+            <tr class="form-field form-required">
+                <th scope="row"><label for="tour_price">Tour Price</label></th>
+                <td>
+                    <input name="tour_price" type="text" id="tour_price" value="<?php echo $tour_price ?>">
                 </td>
             </tr>
         </tbody>
